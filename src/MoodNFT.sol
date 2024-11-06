@@ -5,6 +5,7 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {Base64} from "@openzeppelin/contracts/utils/Base64.sol";
 
 contract MoodNFT is ERC721 {
+
     uint256 private s_tokenCounter;
     string private s_sadSvgImageURI;
     string private s_happySvgImageURI;
@@ -20,6 +21,16 @@ contract MoodNFT is ERC721 {
         s_sadSvgImageURI = sadSvgImageURI;
         s_happySvgImageURI = happySvgImageURI;
         s_tokenCounter = 0;
+    }
+
+    function flipMood(uint256 _tokenId) public {
+        address owner = ownerOf(_tokenId);
+        _checkAuthorized(owner, msg.sender, _tokenId);
+        if(s_tokenIdToMood[_tokenId] == Mood.HAPPY) {
+            s_tokenIdToMood[_tokenId] = Mood.SAD;
+        } else {
+            s_tokenIdToMood[_tokenId] = Mood.HAPPY;
+        }
     }
 
     function mintNft() public {
@@ -45,9 +56,9 @@ contract MoodNFT is ERC721 {
                 Base64.encode(
                     bytes(
                         abi.encodePacked(
-                            '{"name":} "',
+                            '{"name": "',
                             name(),
-                            '", description: "A mood NFT", "attributes": [{"trait_type": "mood", "value": 100}], "image": "',
+                            '", "description": "A mood NFT", "attributes": [{"trait_type": "mood", "value": 100}], "image": "',
                             imageURI,
                             '"}'
                         )
