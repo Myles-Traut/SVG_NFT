@@ -16,5 +16,4 @@ contract FlipMood is Script {
         MoodNFT(mostRecentlyDeployed).flipMood(0);
         vm.stopBroadcast();
     }
-    
 }

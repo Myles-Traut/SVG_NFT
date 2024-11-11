@@ -16,5 +16,4 @@ contract MintMoodNFT is Script {
         MoodNFT(mostRecentlyDeployed).mintNft();
         vm.stopBroadcast();
     }
-    
 }
